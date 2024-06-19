@@ -1,0 +1,31 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Financial Goals</h1>
+<h2>Current Goals</h2>
+<ul>
+    {% for goal in goals %}
+    <li>
+        <strong>{{ goal.name }}</strong>: ${{ goal.current_amount }} / ${{ goal.target_amount }} by {{ goal.deadline }}
+        <form method="post" action="{% url 'update_goal' goal.id %}">
+            {% csrf_token %}
+            <label for="amount">Add Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.01" required>
+            <button type="submit">Update Goal</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Add New Goal</h2>
+<form method="post" action="{% url 'add_goal' %}">
+    {% csrf_token %}
+    <label for="name">Goal Name:</label>
+    <input type="text" id="name" name="name" required>
+    <label for="target_amount">Target Amount:</label>
+    <input type="number" id="target_amount" name="target_amount" step="0.01" required>
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline" name="deadline" required>
+    <button type="submit">Add Goal</button>
+</form>
+{% endblock %}
